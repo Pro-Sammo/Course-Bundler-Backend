@@ -15,9 +15,7 @@ import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
 router.route("/courses").get(getAllCourese);
 
 //Create New Course - Only Admin
-router
-  .route("/createcourse")
-  .post(isAuthenticated, authorizeAdmin, singleUpload, createCourse);
+router.route("/createcourse").post(isAuthenticated, authorizeAdmin, singleUpload, createCourse);
 
 // Add Lecture, Delete Lecture , Get Course Details
 router

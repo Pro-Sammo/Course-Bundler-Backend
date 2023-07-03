@@ -5,6 +5,7 @@ import { User } from "../models/User.js";
 
 export const isAuthenticated = catchAsyncError(async (req, res, next) => {
   const { Token } = req.cookies;
+
   if (!Token) return next(new ErrorHandler("Not Logged In", 401));
 
   const decoded = jwt.verify(Token, process.env.JWT_SECRET);
@@ -22,5 +23,5 @@ export const authorizeAdmin = (req, res, next) => {
         403
       )
     );
-    next()
+  next();
 };

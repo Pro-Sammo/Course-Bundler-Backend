@@ -24,11 +24,14 @@ const schema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["admin", "user"],
-    // default: "user",
+    default: "user",
   },
   subscription: {
     id: String,
-    status: String,
+    status: {
+      type: String,
+      default: "Inactive",
+    },
   },
   avatar: {
     public_id: {
@@ -39,22 +42,22 @@ const schema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    playlist: [
-      {
-        course: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Course",
-        },
-        poster: String,
-      },
-    ],
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    resetPasswordToken: String,
-    resetPasswordExpire: String,
   },
+  playlist: [
+    {
+      course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+      poster: String,
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  resetPasswordToken: String,
+  resetPasswordExpire: String,
 });
 
 schema.pre("save", async function (next) {

@@ -9,8 +9,7 @@ import cloudinary from "cloudinary";
 export const getAllCourese = catchAsyncError(async (req, res, next) => {
  const keyword = req.query.keyword || "";
  const category = req.query.category || "";
- 
- 
+
   const courses = await Course.find({
     title:{
       $regex:keyword,
@@ -30,6 +29,7 @@ export const getAllCourese = catchAsyncError(async (req, res, next) => {
 // For create course
 export const createCourse = catchAsyncError(async (req, res, next) => {
   const { title, description, category, createdBy } = req.body;
+
 
   if (!title || !description || !category || !createdBy) {
     return next(new ErrorHandler("please add all fields", 400));

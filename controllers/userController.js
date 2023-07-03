@@ -39,6 +39,7 @@ export const register = catchAsyncError(async (req, res, next) => {
 //Login User
 export const login = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
+
   if (!email || !password)
     return next(new ErrorHandler("Please Enter all Field", 400));
 
@@ -60,7 +61,7 @@ export const logout = catchAsyncError(async (req, res, next) => {
     .cookie("Token", "", {
       expires: new Date(Date.now() - 1000), // Set expires to a past date to delete the cookie
       httpOnly: true,
-      // secure:true,
+      secure: true,
       sameSite: "none",
     })
     .json({
@@ -106,9 +107,9 @@ export const changePassword = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Please enter all field"), 400);
 
   const user = await User.findById(req.user._id).select("+password");
-  console.log(user);
+
   const isMatch = await user.comparePassword(oldpassword);
-  console.log(isMatch);
+
   if (!isMatch) return next(new ErrorHandler("Incorrect old Password"), 400);
   user.password = newpassword;
   await user.save();
@@ -299,14 +300,12 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-
-
-User.watch().on("change",async()=>{
-  const stats = await Stats.find({}).sort({createdAt:"desc"}).limit(1);
-  const subsciption = await User.find({"subscription.status":"active"})
-  stats[0].subscription = subsciption.length
-  stats[0].users = await User.countDocuments()
+User.watch().on("change", async () => {
+  const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
+  const subsciption = await User.find({ "subscription.status": "active" });
+  stats[0].subscription = subsciption.length;
+  stats[0].users = await User.countDocuments();
   stats[0].createdAt = new Date(Date.now());
 
-  await stats[0].save()
-})
+  await stats[0].save();
+});

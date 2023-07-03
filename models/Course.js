@@ -9,8 +9,8 @@ const schema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, "Please enter course title"],
-    minLength: [20, "Title must be at least 4 characters"],
+    required: [true, "Please enter course description"],
+    minLength: [10, "Description must be at least 10 characters"],
   },
   lectures: [
     {
