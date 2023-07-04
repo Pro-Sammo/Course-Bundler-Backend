@@ -7,18 +7,18 @@ import cloudinary from "cloudinary";
 
 // Get all Courses
 export const getAllCourese = catchAsyncError(async (req, res, next) => {
- const keyword = req.query.keyword || "";
- const category = req.query.category || "";
+  const keyword = req.query.keyword || "";
+  const category = req.query.category || "";
 
   const courses = await Course.find({
-    title:{
-      $regex:keyword,
-      $options:"i"
+    title: {
+      $regex: keyword,
+      $options: "i",
     },
-    category:{
-      $regex:category,
-      $options:"i"
-    }
+    category: {
+      $regex: category,
+      $options: "i",
+    },
   }).select("-lectures");
   res.status(200).json({
     success: true,
@@ -29,7 +29,6 @@ export const getAllCourese = catchAsyncError(async (req, res, next) => {
 // For create course
 export const createCourse = catchAsyncError(async (req, res, next) => {
   const { title, description, category, createdBy } = req.body;
-
 
   if (!title || !description || !category || !createdBy) {
     return next(new ErrorHandler("please add all fields", 400));
@@ -163,22 +162,18 @@ export const deleteLecture = catchAsyncError(async (req, res, next) => {
   });
 });
 
-
-
-
-Course.watch().on("change",async()=>{
-  const stats = await Stats.find({}).sort({createdAt:"desc"}).limit(1);
+Course.watch().on("change", async () => {
+  const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1);
   const courses = await Course.find({});
 
   let totalViews = 0;
 
   for (let i = 0; i < courses.length; i++) {
-    totalViews += courses[i].views
+    totalViews += courses[i].views;
   }
 
-  stats[0].views = totalViews
+  stats[0].views = totalViews;
   stats[0].createdAt = new Date(Date.now());
 
-  await stats[0].save()
-
-})
+  await stats[0].save();
+});

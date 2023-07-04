@@ -103,8 +103,8 @@ export const deleteMyProfile = catchAsyncError(async (req, res, next) => {
 export const changePassword = catchAsyncError(async (req, res, next) => {
   const { oldpassword, newpassword } = req.body;
 
-  if (!oldpassword || !newpassword)
-    return next(new ErrorHandler("Please enter all field"), 400);
+
+  if (!oldpassword || !newpassword)return next(new ErrorHandler("Please enter all field"), 400);
 
   const user = await User.findById(req.user._id).select("+password");
 

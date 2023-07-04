@@ -93,8 +93,8 @@ export const getDashboardStats = catchAsyncError(async (req, res, next) => {
     subscriptionPercentage,
     viewsPercentage,
     usersPercentage,
-    usersProfit,
+    subscriptionProfit,
     viewsProfit,
-    subscriptionProfit
+    usersProfit
   });
 });
